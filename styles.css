@@ -1,0 +1,555 @@
+:root {
+  --purple: #7352dd;
+  --yellow: #ffc85e;
+  --peach: #fbebdd;
+  --lavender: #ddd3fa;
+  --white: #ffffff;
+  --ink: #141414;
+  --page: #f1f1f1;
+  --font: "DM Sans", "Helvetica Neue", Arial, sans-serif;
+
+  /* Tokens semánticos (cambian con el tema) */
+  --bg-peach: var(--peach);
+  --bg-lavender: var(--lavender);
+  --bg-yellow: var(--yellow);
+  --bg-white: var(--white);
+  --bg-purple: var(--purple);
+  --text: var(--ink);
+  --text-muted: #3a3a3a;
+  --em: var(--purple);
+  --panel: var(--white);
+  color-scheme: light;
+}
+
+/* ---------- Modo oscuro ---------- */
+:root[data-theme="dark"] {
+  --page: #0e0e11;
+  --bg-peach: #2b2420;
+  --bg-lavender: #2a2447;
+  --bg-yellow: #3f3213;
+  --bg-white: #1b1b20;
+  --bg-purple: #5b3fc4;
+  --text: #f3f1ee;
+  --text-muted: #b9b6c2;
+  --em: #b9a3ff;
+  --panel: #f6f5fb;
+  /* las ilustraciones están pensadas para fondo claro */
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: var(--page);
+  font-family: var(--font);
+  color: var(--text);
+  transition: background-color .25s ease, color .25s ease;
+  -webkit-font-smoothing: antialiased;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* ---------- Grid ---------- */
+.bento {
+  --u: 1cqw;
+  /* unidad de escala: 1% del ancho del bento */
+  container-type: inline-size;
+  width: min(100%, 1100px);
+  aspect-ratio: 772 / 604;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-rows: 222fr 40fr 106fr 168fr;
+  gap: calc(var(--u) * 2.85);
+  grid-template-areas:
+    "create hero   hero  schedule"
+    "create accounts maintain schedule"
+    "write  accounts maintain schedule"
+    "write  stat   grow  grow";
+}
+
+.card--create {
+  grid-area: create;
+  background: var(--bg-peach);
+}
+
+.card--hero {
+  grid-area: hero;
+  background: var(--bg-purple);
+  color: #fff;
+}
+
+.card--schedule {
+  grid-area: schedule;
+  background: var(--bg-lavender);
+}
+
+.card--write {
+  grid-area: write;
+  background: var(--bg-yellow);
+}
+
+.card--accounts {
+  grid-area: accounts;
+  background: var(--bg-white);
+}
+
+.card--maintain {
+  grid-area: maintain;
+  background: var(--bg-yellow);
+}
+
+.card--stat {
+  grid-area: stat;
+  background: var(--bg-white);
+}
+
+.card--grow {
+  grid-area: grow;
+  background: var(--bg-purple);
+  color: #fff;
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+  padding: calc(var(--u) * 2);
+  border-radius: calc(var(--u) * 1.5);
+  transition: background-color .25s ease;
+}
+
+/* Textos: nunca se encogen, las imágenes ocupan el espacio restante */
+.card>h1,
+.card>h2,
+.card>p {
+  flex: none;
+}
+
+h1,
+h2 {
+  font-weight: 500;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+}
+
+h2 {
+  font-size: calc(var(--u) * 3.3);
+}
+
+h2 em {
+  font-style: italic;
+  font-weight: 600;
+  color: var(--em);
+}
+
+/* ---------- Imágenes sueltas: rellenan el hueco libre sin deformarse ---------- */
+.create-img,
+.accounts-img,
+.calendar-img,
+.avatars-img {
+  flex: 1 1 0;
+  min-height: 0;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+/* ---------- Paneles blancos: la imagen se ajusta al panel con su propio margen ---------- */
+.panel {
+  --pt: 0px;
+  --pr: 0px;
+  --pb: 0px;
+  --pl: 0px;
+  position: relative;
+  flex: 1 1 0;
+  min-height: 0;
+  background: var(--panel);
+  border-radius: calc(var(--u) * 1.6);
+  overflow: hidden;
+}
+
+.panel img {
+  position: absolute;
+  top: var(--pt);
+  left: var(--pl);
+  width: calc(100% - var(--pl) - var(--pr));
+  height: calc(100% - var(--pt) - var(--pb));
+  max-width: none;
+  object-fit: contain;
+  object-position: center;
+}
+
+/* ---------- Create ---------- */
+.card--create h2 {
+  margin-bottom: calc(var(--u) * 1.2);
+}
+
+.create-img {
+  object-position: left bottom;
+  margin-bottom: calc(var(--u) * .4);
+}
+
+/* ---------- Hero ---------- */
+.card--hero {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: calc(var(--u) * 1.4);
+}
+
+.card--hero h1 {
+  font-size: calc(var(--u) * 5.2);
+  line-height: 1.05;
+  max-width: 18ch;
+}
+
+.card--hero .accent {
+  color: var(--yellow);
+}
+
+.card--hero em {
+  font-style: italic;
+  font-weight: 600;
+}
+
+.stars {
+  flex: none;
+  width: calc(var(--u) * 12.5);
+  height: auto;
+}
+
+.card--hero p {
+  font-size: calc(var(--u) * 1.55);
+  font-weight: 400;
+  opacity: .92;
+}
+
+/* ---------- Schedule ---------- */
+.card--schedule {
+  gap: calc(var(--u) * 1.5);
+}
+
+.card--schedule .panel {
+  --pt: calc(var(--u) * 1.6);
+  --pl: calc(var(--u) * 1.6);
+  --pb: calc(var(--u) * 1.6);
+  margin-right: calc(var(--u) * -2);
+  /* se corta por el borde derecho */
+  border-radius: calc(var(--u) * 1.6) 0 0 calc(var(--u) * 1.6);
+}
+
+.card--schedule .panel img {
+  object-fit: cover;
+  object-position: left top;
+}
+
+.card--schedule p {
+  font-size: calc(var(--u) * 1.5);
+  line-height: 1.35;
+}
+
+/* ---------- Write ---------- */
+.card--write {
+  gap: calc(var(--u) * 1.4);
+}
+
+.card--write .panel {
+  --pt: calc(var(--u) * 1.2);
+  --pr: calc(var(--u) * 1.2);
+  --pb: calc(var(--u) * 1.2);
+  --pl: calc(var(--u) * 1.2);
+}
+
+/* ---------- Accounts ---------- */
+.card--accounts {
+  padding-top: calc(var(--u) * 1.6);
+  gap: calc(var(--u) * 1.2);
+}
+
+.accounts-img {
+  object-position: center top;
+}
+
+.card--accounts h2 {
+  font-size: calc(var(--u) * 2.9);
+  font-weight: 600;
+}
+
+/* ---------- Maintain ---------- */
+.card--maintain {
+  padding-bottom: 0;
+  gap: calc(var(--u) * 1.2);
+}
+
+.card--maintain h2 {
+  font-size: calc(var(--u) * 2.9);
+  font-weight: 600;
+}
+
+.calendar-img {
+  object-fit: cover;
+  /* el calendario se corta por abajo */
+  object-position: center top;
+}
+
+/* ---------- Stat ---------- */
+.card--stat {
+  gap: calc(var(--u) * .3);
+}
+
+.stat {
+  font-size: calc(var(--u) * 6.7);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: calc(var(--u) * 1.6);
+  color: var(--text-muted);
+}
+
+.avatars-img {
+  width: 78%;
+  margin-top: calc(var(--u) * .8);
+  object-position: left bottom;
+}
+
+/* ---------- Grow ---------- */
+.card--grow {
+  flex-direction: row;
+  align-items: center;
+  gap: calc(var(--u) * 2.4);
+  padding-bottom: 0;
+}
+
+.card--grow .panel {
+  --pt: calc(var(--u) * 1.4);
+  --pr: calc(var(--u) * 1.4);
+  --pl: calc(var(--u) * 1.4);
+  flex: 0 0 41%;
+  align-self: stretch;
+  border-radius: calc(var(--u) * 1.6) calc(var(--u) * 1.6) 0 0;
+}
+
+.card--grow .panel img {
+  object-fit: cover;
+  object-position: center top;
+}
+
+.card--grow h2 {
+  flex: 1 1 0;
+  min-width: 0;
+  font-size: calc(var(--u) * 3.6);
+  font-weight: 500;
+  line-height: 1.05;
+  padding-bottom: calc(var(--u) * 2);
+}
+
+/* ---------- Móvil: una columna, las imágenes dictan su propia altura ---------- */
+@media (max-width: 700px) {
+  body {
+    padding: 14px;
+  }
+
+  .bento {
+    --u: 7.3px;
+    container-type: normal;
+    aspect-ratio: auto;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: none;
+    grid-template-areas:
+      "hero"
+      "create"
+      "schedule"
+      "write"
+      "accounts"
+      "maintain"
+      "stat"
+      "grow";
+    gap: 14px;
+  }
+
+  .card {
+    padding: 22px;
+    border-radius: 20px;
+  }
+
+  .card--hero {
+    min-height: 240px;
+  }
+
+  /* Sin altura fija en la tarjeta: la imagen vuelve a su proporción natural */
+  .create-img,
+  .accounts-img,
+  .calendar-img,
+  .avatars-img {
+    flex: none;
+    height: auto;
+    object-fit: fill;
+  }
+
+  .create-img {
+    width: 60%;
+    margin-top: 24px;
+    margin-bottom: 0;
+  }
+
+  .card--accounts {
+    min-height: 220px;
+  }
+
+  .calendar-img {
+    margin-top: 24px;
+    margin-bottom: -48px;
+  }
+
+  .avatars-img {
+    width: 60%;
+    margin-top: 16px;
+  }
+
+  .panel {
+    flex: none;
+    padding: var(--pt) var(--pr) var(--pb) var(--pl);
+  }
+
+  .panel img,
+  .card--schedule .panel img,
+  .card--grow .panel img {
+    position: static;
+    width: 100%;
+    height: auto;
+    object-fit: fill;
+  }
+
+  .card--schedule .panel {
+    margin-right: -22px;
+  }
+
+  .card--write .panel {
+    margin-top: 24px;
+  }
+
+  .card--grow {
+    flex-direction: column;
+    align-items: flex-start;
+    padding-bottom: 22px;
+  }
+
+  .card--grow .panel {
+    flex: none;
+    width: 100%;
+    align-self: stretch;
+    border-radius: 16px 16px 0 0;
+  }
+
+  .card--grow h2 {
+    flex: none;
+    padding-bottom: 0;
+  }
+}
+
+/* ---------- Botón de tema ---------- */
+.theme-toggle {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 10;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 44px;
+  padding: 0 16px 0 12px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--text);
+  color: var(--page);
+  font: 500 14px/1 var(--font);
+  cursor: pointer;
+  transition: transform .15s ease, background-color .25s ease, color .25s ease;
+}
+
+.theme-toggle:hover {
+  transform: scale(1.04);
+}
+
+.theme-toggle:active {
+  transform: scale(.97);
+}
+
+.theme-toggle:focus-visible {
+  outline: 3px solid var(--purple);
+  outline-offset: 3px;
+}
+
+.theme-toggle svg {
+  width: 20px;
+  height: 20px;
+  flex: none;
+}
+
+.theme-toggle .icon-sun {
+  display: none;
+}
+
+:root[data-theme="dark"] .theme-toggle .icon-sun {
+  display: block;
+}
+
+:root[data-theme="dark"] .theme-toggle .icon-moon {
+  display: none;
+}
+
+.theme-toggle .label-dark {
+  display: inline;
+}
+
+.theme-toggle .label-light {
+  display: none;
+}
+
+:root[data-theme="dark"] .theme-toggle .label-dark {
+  display: none;
+}
+
+:root[data-theme="dark"] .theme-toggle .label-light {
+  display: inline;
+}
+
+@media (max-width: 700px) {
+  .theme-toggle {
+    top: 12px;
+    right: 12px;
+    padding: 0 12px;
+  }
+
+  .theme-toggle .label {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
